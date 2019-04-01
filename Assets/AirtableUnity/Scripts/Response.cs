@@ -11,11 +11,7 @@ namespace AirtableUnity.PX
     {
         public bool Success;
 
-        public bool Delete;
-
         public string Message;
-
-        public Texture2D Image;
 
         public Err Err;
 

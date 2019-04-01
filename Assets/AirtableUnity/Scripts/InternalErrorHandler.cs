@@ -11,12 +11,7 @@ namespace AirtableUnity.PX
         public enum ErrorTypes
         {
             UNKNOWN = 1,
-            DATE_HOUR_WRONG = 2,
-            USER_NAME_REQUIRED = 3,
-            USER_PASSWORD_REQUIRED = 4,
-            NOT_FOUND = 5,
-            NO_CONNECTION = 6,
-            NOT_AUTHORIZED_EXCEPTION = 7
+            DATE_HOUR_WRONG = 2
         }
         public static List<InternalError> GetPossibleErrors(Response response)
         {
@@ -39,8 +34,8 @@ namespace AirtableUnity.PX
                     allErrorsFound.Add(new InternalError()
                     {
                         Code = ErrorTypes.DATE_HOUR_WRONG,
-                        //Title = LM.LanguageManager.GetValue(TranslationKeys.global.internalErrors.wrongDate._title),
-                        //Message = LM.LanguageManager.GetValue(TranslationKeys.global.internalErrors.wrongDate._message)
+                        Title = "Date Hour Wrong",
+                        Message = "Your date is wrong"
                     });
             }
 
@@ -49,8 +44,8 @@ namespace AirtableUnity.PX
                 allErrorsFound.Add(new InternalError()
                 {
                     Code = ErrorTypes.UNKNOWN,
-                    //Title = LM.LanguageManager.GetValue(TranslationKeys.global.internalErrors.unknown._message),
-                    //Message = LM.LanguageManager.GetValue(TranslationKeys.global.internalErrors.unknown._message)
+                    Title = "Unknown Error",
+                    Message = "A unknown error has occurred"
                 });
 
             return allErrorsFound;

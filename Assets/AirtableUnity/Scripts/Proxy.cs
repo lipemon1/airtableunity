@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -9,7 +10,7 @@ namespace AirtableUnity.PX
 {
     public static class Proxy
     {
-        private static string EndPoint_Airtable { get { return "https://api.goepik.io"; } }
+        private static string EndPoint_Airtable { get { return "https://api.airtable.com"; } }
         private static string ApiVersion;
         private static string AppKey;
         private static string ApiKey;
@@ -17,9 +18,21 @@ namespace AirtableUnity.PX
         #region Environment
         public static void SetEnvironment(string apiVersion, string appKey, string apiKey)
         {
+            if(string.IsNullOrEmpty(apiVersion))
+                Debug.LogError("Airtable Unity - Api Version informed is null or empty");
+            
+            if(string.IsNullOrEmpty(appKey))
+                Debug.LogError("Airtable Unity - App Key informed is null or empty");
+                
+            if(string.IsNullOrEmpty(apiKey))
+                Debug.LogError("Airtable Unity - Api Key informed is null or empty");
+                
             ApiVersion = apiVersion;
             AppKey = appKey;
             ApiKey = apiKey;
+            
+            if(!string.IsNullOrEmpty(apiVersion) && !string.IsNullOrEmpty(AppKey) && !string.IsNullOrEmpty(ApiKey))
+                Debug.Log("Airtable Unity - Environment prepared successfully");
         }
         #endregion
 
@@ -75,9 +88,7 @@ namespace AirtableUnity.PX
             {
                 response = new Response();
 
-                if (request.downloadHandler is DownloadHandlerTexture)
-                    response.Image = (request.downloadHandler as DownloadHandlerTexture).texture;
-                else if (request.downloadHandler is DownloadHandler && request.responseCode != 404)
+                if (request.downloadHandler is DownloadHandler && request.responseCode != 404)
                     response = JsonConvert.DeserializeObject<Response>(request.downloadHandler.text);
 
                 if (response == null)
@@ -85,15 +96,11 @@ namespace AirtableUnity.PX
 
                 response.Success = true;
                 response.Message = request.downloadHandler.text;
-                response.Delete = false;
 
                 if (request.responseCode != 200)
                 {
                     response.Success = false;
-                    response.Message += "\nFail Http " + request.responseCode.ToString();
-
-                    if (request.responseCode == 403)
-                        response.Delete = true;
+                    response.Message += "\nFail Http " + request.responseCode;
 
                     if (request.responseCode == 404)
                         response.Err.errors.Add("NOT_FOUND");
@@ -103,7 +110,6 @@ namespace AirtableUnity.PX
 
                     if (request.responseCode == 400 || request.responseCode == 500)
                     {
-                        response.Delete = true;
                         response.Success = false;
                     }
 
@@ -111,7 +117,6 @@ namespace AirtableUnity.PX
                     {
                         response.Success = false;
                         response.Message += "\n" + response.Err;
-                        response.Delete = true;
                         Debug.LogError(response.Message + "\n" + request.url);
                     }
 
@@ -141,17 +146,29 @@ namespace AirtableUnity.PX
         #region Requests
 
         #region Records From Table
-        public static UnityWebRequest GetRecordsFromTable(string tableName)
-        {
-            var relativeUri = $"/{ApiVersion}/{AppKey}/{tableName}?api_key={ApiKey}";
-            return GetRequest(EndPoint_Airtable, relativeUri, Method.GET);
-        }
 
-        public static UnityWebRequest GetRecordsFromTable(string apiVersion, string appKey, string tableName, string apiKey)
+        public static IEnumerator GetRecordsFromTable(string tableName, Action<string> actionToReceiveJson)
         {
-            var relativeUri = $"/{apiVersion}/{appKey}/{tableName}?api_key={apiKey}";
+            string jsonToReturn = null;
+            
+            List<string> responsesAsString = new List<string>();
+            string curOffset = "";
+            
+            yield return GetRecordsFromTable(tableName).SendWebRequest(
+                (response) =>
+                {
+                    actionToReceiveJson(response?.Message);
+                });
+
+            actionToReceiveJson(jsonToReturn);
+        }
+        
+        private static UnityWebRequest GetRecordsFromTable(string tableName)
+        {
+            var relativeUri = $"{ApiVersion}/{AppKey}/{tableName}?api_key={ApiKey}";
             return GetRequest(EndPoint_Airtable, relativeUri, Method.GET);
         }
+        
         #endregion
         #endregion
     }
