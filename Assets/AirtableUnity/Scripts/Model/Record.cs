@@ -2,10 +2,10 @@ using System.Collections.Generic;
 
 namespace AirtableUnity.PX.Model
 {
-    public class Record
+    public class Record<T>
     {
         public string id;
-        public List<Field> fields = new List<Field>();
+        public T fields;
         public string createdTime;
     }
 }

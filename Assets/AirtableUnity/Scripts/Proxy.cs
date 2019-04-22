@@ -148,9 +148,9 @@ namespace AirtableUnity.PX
 
         #region Records From Table
 
-        public static IEnumerator GetRecordsFromTable<T>(string tableName, Action<List<T>> outputActionRecords = null)
+        public static IEnumerator GetRecordsFromTable<T>(string tableName, Action<List<Record<T>>> outputActionRecords = null)
         {
-            List<T> recordsToReturn = new List<T>();
+            var recordsToReturn = new List<Record<T>>();
             string curOffset = "";
 
             do

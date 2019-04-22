@@ -5,11 +5,11 @@ namespace AirtableUnity.PX.Model
     public class AirtableResponse<T>
     {
         public string offset;
-        public List<T> records = new List<T>();
+        public List<Record<T>> records = new List<Record<T>>();
 
         public AirtableResponse()
         {
-            records = new List<T>();
+            records = new List<Record<T>>();
         }
     }
 }

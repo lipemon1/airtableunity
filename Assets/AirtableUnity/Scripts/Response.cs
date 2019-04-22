@@ -29,11 +29,9 @@ namespace AirtableUnity.PX
         {
             try
             {
-                var possibleResponse = JsonConvert.DeserializeObject<List<AirtableResponse<T>>>(Message);
+                var possibleResponse = JsonConvert.DeserializeObject<AirtableResponse<T>>(Message);
 
-                var airtableResponse = possibleResponse?.FirstOrDefault();
-                
-                return airtableResponse;
+                return possibleResponse;
             }
             catch (Exception e)
             {
