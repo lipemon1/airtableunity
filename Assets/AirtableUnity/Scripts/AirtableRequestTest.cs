@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using AirtableUnity.PX.Model;
 using UnityEngine;
 
 public class AirtableRequestTest : MonoBehaviour {
@@ -28,11 +29,11 @@ public class AirtableRequestTest : MonoBehaviour {
 
     private IEnumerator CallTableTest()
     {
-	    yield return StartCoroutine(AirtableUnity.PX.Proxy.GetRecordsFromTable(TableToTest, ShowResponse));
+	    yield return StartCoroutine(AirtableUnity.PX.Proxy.GetRecordsFromTable<Record>(TableToTest, ShowResponse));
     }
 
-    private void ShowResponse(string response)
+    private void ShowResponse(List<Record> records)
     {
-	    Debug.Log(response);
+	    Debug.Log(records?.Count);
     }
 }

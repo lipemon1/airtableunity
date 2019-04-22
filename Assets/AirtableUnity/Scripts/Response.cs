@@ -2,6 +2,8 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using AirtableUnity.PX.Model;
 using UnityEngine;
 
 namespace AirtableUnity.PX
@@ -21,6 +23,23 @@ namespace AirtableUnity.PX
         {
             T result = JObject.Parse(Message)["data"].ToObject<T>();
             return result;
+        }
+        
+        public AirtableResponse<T> GetAirtableData<T>()
+        {
+            try
+            {
+                var possibleResponse = JsonConvert.DeserializeObject<List<AirtableResponse<T>>>(Message);
+
+                var airtableResponse = possibleResponse?.FirstOrDefault();
+                
+                return airtableResponse;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+                return null;
+            }
         }
 
         public Response()
