@@ -2,13 +2,14 @@
 
 namespace AirtableUnity.PX.Model
 {   
-    public class AirtableResponse
+    public class AirtableResponse<T>
     {
         public string offset;
+        public List<Record<T>> records = new List<Record<T>>();
 
-        public AirtableResponse(string offset)
+        public AirtableResponse()
         {
-            offset = this.offset;
+            records = new List<Record<T>>();
         }
     }
 }

@@ -37,7 +37,7 @@ public static class UnityWebRequestExtension
     public static IEnumerator SendWebRequest(this UnityWebRequest request, System.Action<AirtableUnity.PX.Response> onSucess = null, System.Action<AirtableUnity.PX.Response> onFail = null)
     {
         yield return request.SendWebRequest();
-        AirtableUnity.PX.Response response = AirtableUnity.PX.Proxy.GetResposnse(request);
+        AirtableUnity.PX.Response response = AirtableUnity.PX.Proxy.GetResponse(request);
         var c1 = "<b>";
         var c2 = "</b>";
 

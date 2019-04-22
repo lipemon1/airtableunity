@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using AirtableUnity.PX.Model;
 using UnityEngine;
 using UnityEngine.Networking;
 using Newtonsoft.Json;
@@ -81,7 +82,7 @@ namespace AirtableUnity.PX
         #endregion
 
         #region Base Response
-        public static Response GetResposnse(UnityWebRequest request)
+        public static Response GetResponse(UnityWebRequest request)
         {
             Response response = new Response();
             try
@@ -147,25 +148,37 @@ namespace AirtableUnity.PX
 
         #region Records From Table
 
-        public static IEnumerator GetRecordsFromTable(string tableName, Action<string> actionToReceiveJson)
+        public static IEnumerator GetRecordsFromTable<T>(string tableName, Action<List<Record<T>>> outputActionRecords = null)
         {
-            string jsonToReturn = null;
-            
-            List<string> responsesAsString = new List<string>();
+            var recordsToReturn = new List<Record<T>>();
             string curOffset = "";
-            
-            yield return GetRecordsFromTable(tableName).SendWebRequest(
-                (response) =>
-                {
-                    actionToReceiveJson(response?.Message);
-                });
 
-            actionToReceiveJson(jsonToReturn);
+            do
+            {
+                yield return GetRecordsFromTable(tableName, curOffset).SendWebRequest(
+                    (response) =>
+                    {
+                        var recordsFound = response?.GetAirtableData<T>()?.records;
+                        
+                        if(recordsFound?.Count > 0)
+                            recordsToReturn.AddRange(recordsFound);
+                        
+                        curOffset = response?.GetAirtableData<T>()?.offset;
+                    });
+            } while (!string.IsNullOrEmpty(curOffset));
+
+            outputActionRecords?.Invoke(recordsToReturn);
         }
         
-        private static UnityWebRequest GetRecordsFromTable(string tableName)
+        private static UnityWebRequest GetRecordsFromTable(string tableName, string offset = "")
         {
-            var relativeUri = $"{ApiVersion}/{AppKey}/{tableName}?api_key={ApiKey}";
+            var relativeUri = "";
+            
+            if(string.IsNullOrEmpty(offset))
+                relativeUri = $"{ApiVersion}/{AppKey}/{tableName}?api_key={ApiKey}";
+            else
+                relativeUri = $"{ApiVersion}/{AppKey}/{tableName}?api_key={ApiKey}&offset={offset}";
+            
             return GetRequest(EndPoint_Airtable, relativeUri, Method.GET);
         }
         
