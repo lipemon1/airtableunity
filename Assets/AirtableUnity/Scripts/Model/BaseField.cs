@@ -1,6 +1,6 @@
 namespace AirtableUnity.PX.Model
 {
-    public class Field
+    public class BaseField
     {
         public long Id { get; set; }
     }

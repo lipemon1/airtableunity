@@ -7,7 +7,7 @@ using System.Linq;
 
 public static class UnityWebRequestExtension
 {
-    public enum Method { GET, POST, PUT, PATCH };
+    public enum Method { GET, POST, PUT, PATCH, DELETE };
 
     public static void SetRequestHeaders(this UnityWebRequest request, Dictionary<string, string> headers)
     {

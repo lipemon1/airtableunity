@@ -1,0 +1,125 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6352173289137666625
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6352173289137666636}
+  - component: {fileID: 6352173289137666627}
+  - component: {fileID: 6352173289137666626}
+  - component: {fileID: 8766905944066068390}
+  - component: {fileID: 7158949621873082479}
+  - component: {fileID: 1941434714518583476}
+  - component: {fileID: 8078522160360735009}
+  m_Layer: 0
+  m_Name: AirTableExamples
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6352173289137666636
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6352173289137666625}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6352173289137666627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6352173289137666625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 942eb6b142aae164096d263d953d0bf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AutoStart: 1
+  ApiVersion: v0
+  AppKey: appdnn9LtBJ65C86f
+  ApiKey: key72iwxvgWuOVXJL
+--- !u!114 &6352173289137666626
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6352173289137666625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76539e2e8d92ebd42a654e76b61a86c7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TableName: Records
+--- !u!114 &8766905944066068390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6352173289137666625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e90750015855cf489ba6b59a27e6c46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TableName: Records
+  RecordId: 
+--- !u!114 &7158949621873082479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6352173289137666625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 656b2cc87c5d4804682885932e0db080, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TableName: Records
+  NewRecordJson: "{\n  \"fields\": {\n    \"Description\": \"Tem que ter mudado\",\n
+    \   \"Long Description\": \"Nova coisa aqui\"\n  }\n}"
+--- !u!114 &1941434714518583476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6352173289137666625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f62c4526b1df50447b4a43425082c802, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TableName: Records
+  RecordId: 
+  NewRecordJson: "{\n  \"fields\": {\n    \"Description\": \"rerezinho\"\n  }\n}"
+--- !u!114 &8078522160360735009
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6352173289137666625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c136558fb18abd4da87fe9b672cb202, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TableName: Records
+  RecordId: recmp8pb0Iy3pftcG

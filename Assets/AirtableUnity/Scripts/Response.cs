@@ -39,6 +39,21 @@ namespace AirtableUnity.PX
                 return null;
             }
         }
+        
+        public BaseRecord<T> GetAirtableRecord<T>()
+        {
+            try
+            {
+                var possibleResponse = JsonConvert.DeserializeObject<BaseRecord<T>>(Message);
+
+                return possibleResponse;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e);
+                return null;
+            }
+        }
 
         public Response()
         {

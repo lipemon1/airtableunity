@@ -29,10 +29,10 @@ public class AirtableRequestTest : MonoBehaviour {
 
     private IEnumerator CallTableTest()
     {
-	    yield return StartCoroutine(AirtableUnity.PX.Proxy.GetRecordsFromTable<Field>(TableToTest, ShowResponse));
+	    yield return StartCoroutine(AirtableUnity.PX.Proxy.ListRecordsCo<BaseField>(TableToTest, ShowResponse));
     }
 
-    private void ShowResponse(List<Record<Field>> records)
+    private void ShowResponse(List<BaseRecord<BaseField>> records)
     {
 	    Debug.Log(records?.Count);
     }

@@ -54,11 +54,10 @@ namespace AirtableUnity.PX
             var request = GetRequest(sendUri.OriginalString, requestMethod, data);
             return request;
         }
-
-        private static UnityWebRequest GetAirtableRequest(string baseUri, string relativeUri, Method requestMethod, string data = null)
+        
+        private static string BaseRequestString(string tableName)
         {
-            var request = GetRequest(baseUri, relativeUri, requestMethod, data);
-            return request;
+            return $"{ApiVersion}/{AppKey}/{tableName}/";
         }
 
         private static UnityWebRequest GetRequest(string url, Method requestMethod, string data = null)
@@ -146,16 +145,16 @@ namespace AirtableUnity.PX
 
         #region Requests
 
-        #region Records From Table
+        #region List Records From Table
 
-        public static IEnumerator GetRecordsFromTable<T>(string tableName, Action<List<Record<T>>> outputActionRecords = null)
+        public static IEnumerator ListRecordsCo<T>(string tableName, Action<List<BaseRecord<T>>> outputActionRecords = null)
         {
-            var recordsToReturn = new List<Record<T>>();
+            var recordsToReturn = new List<BaseRecord<T>>();
             string curOffset = "";
 
             do
             {
-                yield return GetRecordsFromTable(tableName, curOffset).SendWebRequest(
+                yield return ListRecords(tableName, curOffset).SendWebRequest(
                     (response) =>
                     {
                         var recordsFound = response?.GetAirtableData<T>()?.records;
@@ -170,18 +169,123 @@ namespace AirtableUnity.PX
             outputActionRecords?.Invoke(recordsToReturn);
         }
         
-        private static UnityWebRequest GetRecordsFromTable(string tableName, string offset = "")
+        private static UnityWebRequest ListRecords(string tableName, string offset = "")
         {
             var relativeUri = "";
+            var baseUri = BaseRequestString(tableName);
             
             if(string.IsNullOrEmpty(offset))
-                relativeUri = $"{ApiVersion}/{AppKey}/{tableName}?api_key={ApiKey}";
+                relativeUri = $"{baseUri}?api_key={ApiKey}";
             else
-                relativeUri = $"{ApiVersion}/{AppKey}/{tableName}?api_key={ApiKey}&offset={offset}";
+                relativeUri = $"{baseUri}?api_key={ApiKey}&offset={offset}";
             
             return GetRequest(EndPoint_Airtable, relativeUri, Method.GET);
         }
+        #endregion
         
+        #region Get Record
+
+        public static IEnumerator GetRecordCo<T>(string tableName, string recordId, Action<BaseRecord<T>> outputActionRecords = null)
+        {
+            var recordToReturn = new BaseRecord<T>();
+
+            yield return GetRecord(tableName, recordId).SendWebRequest(
+                (response) =>
+                {
+                    var recordFound = response?.GetAirtableRecord<T>();
+
+                    if (recordFound != null)
+                        recordToReturn = recordFound;
+                });
+
+            outputActionRecords?.Invoke(recordToReturn);
+        }
+        
+        private static UnityWebRequest GetRecord(string tableName, string recordId)
+        {
+            var relativeUri = $"{BaseRequestString(tableName)}{recordId}/?api_key={ApiKey}";
+            
+            return GetRequest(EndPoint_Airtable, relativeUri, Method.GET);
+        }
+        #endregion  
+        
+        #region Create Record
+
+        public static IEnumerator CreateRecordCo<T>(string tableName, string recordToCreate, Action<BaseRecord<T>> outputActionRecords = null)
+        {
+            var recordToReturn = new BaseRecord<T>();
+
+            yield return CreateRecord(tableName, recordToCreate).SendWebRequest(
+                (response) =>
+                {
+                    var recordFound = response?.GetAirtableRecord<T>();
+
+                    if (recordFound != null)
+                        recordToReturn = recordFound;
+                });
+
+            outputActionRecords?.Invoke(recordToReturn);
+        }
+        
+        private static UnityWebRequest CreateRecord(string tableName, string recordToCreate)
+        {
+            var relativeUri = $"{BaseRequestString(tableName)}?api_key={ApiKey}";
+            
+            return GetRequest(EndPoint_Airtable, relativeUri, Method.POST, recordToCreate);
+        }
+        #endregion
+        
+        #region Update Record
+
+        public static IEnumerator UpdateRecordCo<T>(string tableName, string recordId, string recordDataToUpdate, Action<BaseRecord<T>> outputActionRecords = null, bool hardUpdate = false)
+        {
+            var recordToReturn = new BaseRecord<T>();
+
+            yield return UpdateRecord(tableName, recordId, recordDataToUpdate, hardUpdate).SendWebRequest(
+                (response) =>
+                {
+                    var recordFound = response?.GetAirtableRecord<T>();
+
+                    if (recordFound != null)
+                        recordToReturn = recordFound;
+                });
+
+            outputActionRecords?.Invoke(recordToReturn);
+        }
+        
+        private static UnityWebRequest UpdateRecord(string tableName, string recordId, string recordToCreate, bool hardUpdate)
+        {
+            var relativeUri = $"{BaseRequestString(tableName)}{recordId}/?api_key={ApiKey}";
+            
+            return GetRequest(EndPoint_Airtable, relativeUri, hardUpdate ? Method.PUT : Method.PATCH, recordToCreate);
+        }
+        #endregion
+
+        #region Delete Record
+
+        public static IEnumerator DeleteRecordCo<T>(string tableName, string recordId, Action<BaseRecord<T>> outputActionRecords = null)
+        {
+            var recordToReturn = new BaseRecord<T>();
+
+            yield return DeleteRecord(tableName, recordId).SendWebRequest(
+                (response) =>
+                {
+                    var recordFound = response?.GetAirtableRecord<T>();
+
+                    if (recordFound != null)
+                        recordToReturn = recordFound;
+                });
+
+            outputActionRecords?.Invoke(recordToReturn);
+        }
+        
+        private static UnityWebRequest DeleteRecord(string tableName, string recordId)
+        {
+            var relativeUri = $"{BaseRequestString(tableName)}{recordId}/?api_key={ApiKey}";
+            
+            return GetRequest(EndPoint_Airtable, relativeUri, Method.DELETE);
+        }
+
         #endregion
         #endregion
     }
