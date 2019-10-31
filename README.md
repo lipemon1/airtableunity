@@ -2,8 +2,7 @@
 This is just UnityPackage to make the integration with AirTable platform faster.
 
 If you don't a have a Airtable account, use my code just to pump the work on this.
-[Create Airtable Account Here]
-(https://airtable.com/invite/r/Z0HGfPKB)
+https://airtable.com/invite/r/Z0HGfPKB
 
 [Download Airtable Unity Package here](https://github.com/lipemon1/airtableunity/raw/master/Assets/AirtableUnity/AirtableUnityPlugin.unitypackage "Airtable Unity Package").
 
